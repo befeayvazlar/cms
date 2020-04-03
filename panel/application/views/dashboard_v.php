@@ -29,11 +29,6 @@
         <!-- /#app-footer -->
     </main>
     <!--========== END app main -->
-
-    <!-- SIDE PANEL -->
-    <?php $this->load->view('includes/right-aside'); ?>
-    <!-- END side panel-->
-
     <?php $this->load->view('includes/include_script'); ?>
 </body>
 </html>
