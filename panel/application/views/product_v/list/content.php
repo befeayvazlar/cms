@@ -7,10 +7,11 @@
     </div><!-- END column -->
     <div class="col-md-12">
         <div class="widget p-lg">
-
-            <div class="alert alert-info text-center">
-                <p>Burada herhangi bir veri bulunmamaktadır. Eklemek için lütfen <a href="#">tıklayınız</a></p>
-            </div>
+            <?php if(empty($items)) { ?>
+                <div class="alert alert-info text-center">
+                    <p>Burada herhangi bir veri bulunmamaktadır. Eklemek için lütfen <a href="#">tıklayınız</a></p>
+                </div>
+            <?php } else { ?>
 
             <table class="table table-hover table-striped">
                 <thead>
@@ -22,88 +23,27 @@
                 <th>İşlem</th>
                 </thead>
                 <tbody>
+                    <?php foreach ($items as $item) { ?>
                 <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
+                    <td><?php echo $item->id; ?></td>
+                    <td><?php echo $item->url; ?></td>
+                    <td><?php echo $item->title; ?></td>
+                    <td><?php echo $item->description; ?></td>
+                    <td><?php echo $item->rank; ?></td>
+                    <td><?php echo $item->isActive; ?></td>
                     <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
+                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" <?php echo ($item->isActive) ? 'checked' : '';  ?> />
                     </td>
                     <td>
                         <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
                         <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
-                    <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
-                        <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
-                    <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
-                        <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
-                    <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
-                        <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
-                    <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
-                        <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#1</td>
-                    <td>monitor-askisi</td>
-                    <td>Monitör Askısı</td>
-                    <td>360 derece kullanılabilen monitör askısıdır..</td>
-                    <td>
-                        <input id="switch-2-2" type="checkbox" data-switchery data-color="#10c469" checked />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Sil</a>
-                        <a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
-                    </td>
-                </tr>
-
+                <?php } ?>
                 </tbody>
 
             </table>
+            <?php } ?>
 
         </div><!-- .widget -->
     </div><!-- END column -->
