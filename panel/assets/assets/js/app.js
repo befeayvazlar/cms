@@ -554,7 +554,13 @@
 // initialize app
 +function($, window) { 'use strict';
 	window.app.init();
-	window.app.menubar.init();
+    window.app.menubar.setTheme('dark');
+    window.app.menubar.applyTheme();
+    window.app.saveSettings();
+    window.app.navbar.setTheme('warning');
+    window.app.navbar.applyTheme();
+    window.app.saveSettings();
+    window.app.menubar.init();
 	window.app.navbar.init();
 	window.app.customizer.init();
 }(jQuery, window);
