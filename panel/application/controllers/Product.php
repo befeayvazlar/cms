@@ -63,12 +63,12 @@ class Product extends CI_Controller {
 					"createdAt"     => date("Y-m-d H:i:s"),
 				)
 			);
-
+			// TODO Alert Sistemi Eklenecek
 			if($insert) {
-				echo "işlem başarılıdır.";
+				redirect(base_url("product"));
 			}
 			else{
-				echo "işlem başarısız";
+				redirect(base_url("product"));
 			}
 		}
 		else {
