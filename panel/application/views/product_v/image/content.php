@@ -22,7 +22,12 @@
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-body">
-                <table class="table table-hover table-striped pictures_list">
+	            <?php if(empty($item_images)) { ?>
+                    <div class="alert alert-info text-center">
+                        <p>Burada herhangi bir resim bulunmamaktadır.</p>
+                    </div>
+	            <?php } else { ?>
+                    <table class="table table-hover table-striped pictures_list">
                     <thead>
                     <th>#id</th>
                     <th>Ürün Resmi</th>
@@ -56,6 +61,7 @@
                     </tbody>
 
                 </table>
+                <?php  } ?>
             </div><!-- .widget-body -->
         </div><!-- .widget -->
 
