@@ -33,5 +33,9 @@ $(document).ready(function () {
         var $data_url = $(this).data("url");
         $.post($data_url,{data: $data}, function (response) {})
     })
+    var uploadSection = Dropzone.forElement("#dropzone");
+    uploadSection.on("complete",function () {
+        alert();
+    })
 
 })
