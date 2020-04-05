@@ -31,7 +31,6 @@
                     <td><?php echo $item->title; ?></td>
                     <td><?php echo $item->url; ?></td>
                     <td><?php echo $item->description; ?></td>
-                    <td><?php echo $item->isActive; ?></td>
                     <td>
                         <input
                                data-url="<?php echo base_url("product/isActiveSetter/$item->id"); ?>"
@@ -45,6 +44,7 @@
                     <td>
                         <button data-url="<?php echo base_url("product/delete/$item->id");?>" class="btn btn-sm btn-danger btn-outline remove-btn"><i class="fa fa-trash"></i> Sil</button>
                         <a href="<?php echo base_url("product/update_form/$item->id");?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil-square-o"></i> Düzenle</a>
+                        <a href="<?php echo base_url("product/image_form/$item->id");?>" class="btn btn-sm btn-success btn-outline"><i class="fa fa-image"></i> Resimler</a>
                     </td>
                 </tr>
                 <?php } ?>
