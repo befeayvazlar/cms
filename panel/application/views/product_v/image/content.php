@@ -31,11 +31,13 @@
                     <th>İşlem</th>
                     </thead>
                     <tbody class="sortable" data-url="<?php echo base_url("product/rankSetter"); ?>">
-		            <?php foreach ($items as $item) { ?>
-                        <tr id="ord-<?php echo $item->id; ?>">
-                            <td class="w100 text-center"><?php echo $item->id; ?></td>
-                            <td class="w100 text-center"><?php echo $item->image; ?></td>
-                            <td><?php echo $item->title; ?></td>
+		            <?php foreach ($item_images as $image) { ?>
+                        <tr id="ord-<?php echo $image->id; ?>">
+                            <td class="w100 text-center"><?php echo $image->id; ?></td>
+                            <td class="w100 text-center">
+                                <img src="<?php echo base_url("uploads/{$viewFolder}/$image->img_url"); ?>" class="img-responsive" alt="" width="30" />
+                            </td>
+                            <td class=""><?php echo $image->img_url; ?></td>
                             <td class="w100 text-center">
                                 <input
                                         data-url="<?php echo base_url("product/isActiveSetter/$item->id"); ?>"
@@ -43,7 +45,7 @@
                                         type="checkbox"
                                         data-switchery
                                         data-color="#10c469"
-						            <?php echo ($item->isActive) ? 'checked' : ''; ?>
+						            <?php echo ($image->isActive) ? 'checked' : ''; ?>
                                 />
                             </td>
                             <td class="w100 text-center">
