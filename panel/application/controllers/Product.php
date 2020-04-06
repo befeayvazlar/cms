@@ -68,11 +68,23 @@ class Product extends CI_Controller {
 			);
 			// TODO Alert Sistemi Eklenecek
 			if($insert) {
-				redirect(base_url("product"));
+				$alert = array(
+					"title"     => "İşlem Başarılı",
+					"text"      => "Ürün başarılı şekilde eklendi.",
+					"type"      => "success",
+				);
 			}
 			else{
-				redirect(base_url("product"));
+				$alert = array(
+					"title"     => "Hata",
+					"text"      => "Ürün ekleme sırasında hata oluştu.",
+					"type"      => "error",
+				);
 			}
+			//İşlemin sonucunu session'a yazma işlemi
+			$this->session->set_flashdata("alert", $alert);
+			redirect(base_url("product"));
+
 		}
 		else {
 			$viewData = new stdClass();
@@ -131,11 +143,22 @@ class Product extends CI_Controller {
 			);
 			// TODO Alert Sistemi Eklenecek
 			if($update) {
-				redirect(base_url("product"));
+				$alert = array(
+					"title"     => "İşlem Başarılı",
+					"text"      => "Ürün başarılı şekilde güncellendi.",
+					"type"      => "success",
+				);
 			}
 			else{
-				redirect(base_url("product"));
+				$alert = array(
+					"title"     => "Hata",
+					"text"      => "Ürün güncelleme sırasında hata oluştu.",
+					"type"      => "error",
+				);
 			}
+			//İşlemin sonucunu session'a yazma işlemi
+			$this->session->set_flashdata("alert", $alert);
+			redirect(base_url("product"));
 		}
 		else {
 			$viewData = new stdClass();
@@ -163,11 +186,58 @@ class Product extends CI_Controller {
 
 		// TODO Alert Sistemi Eklenecek
 		if($delete) {
-			redirect(base_url("product"));
+			$alert = array(
+				"title"     => "İşlem Başarılı",
+				"text"      => "Ürün başarılı şekilde silindi.",
+				"type"      => "success",
+			);
 		}
 		else{
-			redirect(base_url("product"));
+			$alert = array(
+				"title"     => "Hata",
+				"text"      => "Ürün silme sırasında hata oluştu.",
+				"type"      => "error",
+			);
 		}
+		//İşlemin sonucunu session'a yazma işlemi
+		$this->session->set_flashdata("alert", $alert);
+		redirect(base_url("product"));
+	}
+
+	public function imageDelete($id, $parent_id){
+
+		$file_name = $this->product_image_model->get(
+			array(
+			"id" => $id,
+			)
+		);
+
+		$delete = $this->product_image_model->delete(array(
+			"id" => $id,
+		));
+
+		// TODO Alert Sistemi Eklenecek
+		if($delete) {
+			$alert = array(
+				"title"     => "İşlem Başarılı",
+				"text"      => "Ürün resmi başarılı şekilde silindi.",
+				"type"      => "success",
+			);
+
+			unlink("uploads/{$this->viewFolder}/$file_name->img_url");
+			//redirect(base_url("product/image_form/$parent_id"));
+		}
+		else{
+			$alert = array(
+				"title"     => "Hata",
+				"text"      => "Ürün resmi silme sırasında hata oluştu.",
+				"type"      => "error",
+			);
+			//redirect(base_url("product/image_form/$parent_id"));
+		}
+		//İşlemin sonucunu session'a yazma işlemi
+		$this->session->set_flashdata("alert", $alert);
+		redirect(base_url("product/image_form/$parent_id"));
 	}
 
 	public function isActiveSetter($id){
@@ -185,12 +255,87 @@ class Product extends CI_Controller {
 
 	}
 
+	public function imageIsActiveSetter($id){
+		if($id){
+			$isActive = ($this->input->post("data") === "true") ? 1: 0;
+			$this->product_image_model->update(
+				array(
+					"id" => $id,
+				),
+				array(
+					"isActive" => $isActive,
+				)
+			);
+		}
+
+	}
+
+	public function isCoverSetter($id, $parent_id){
+		if($id && $parent_id){
+			$isCover = ($this->input->post("data") === "true") ? 1: 0;
+			//Kapak yapılmak istenen kayıt
+			$this->product_image_model->update(
+				array(
+					"id"            => $id,
+					"product_id"    => $parent_id
+				),
+				array(
+					"isCover"       => $isCover
+				)
+			);
+			// Kapak yapılmayan diğer kayıtlar
+			$this->product_image_model->update(
+				array(
+					"id !="            => $id,
+					"product_id"    => $parent_id
+				),
+				array(
+					"isCover"       => 0
+				)
+			);
+
+			$viewData = new stdClass();
+
+			/* View'e gönderilecek değişkenlerin set edilmesi */
+			$viewData->viewFolder = $this->viewFolder;
+			$viewData->subViewFolder = "image";
+
+			$viewData->item_images = $this->product_image_model->get_all(
+				array(
+					"product_id" => $parent_id
+				), "rank ASC"
+			);
+
+			$render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+			echo $render_html;
+		}
+
+	}
+
 	public function rankSetter(){
 		$data = $this->input->post("data");
 		parse_str($data, $order);
 		$items = $order["ord"];
 		foreach($items as $rank => $id){
 			$this->product_model->update(
+				array(
+					"id"        => $id,
+					"rank !="   => $rank,
+				),
+				array(
+					"rank"      => $rank
+				)
+			);
+
+		}
+	}
+
+	public function imageRankSetter(){
+		$data = $this->input->post("data");
+		parse_str($data, $order);
+		$items = $order["ord"];
+		foreach($items as $rank => $id){
+			$this->product_image_model->update(
 				array(
 					"id"        => $id,
 					"rank !="   => $rank,
@@ -219,7 +364,7 @@ class Product extends CI_Controller {
 		$viewData->item_images = $this->product_image_model->get_all(
 			array(
 				"product_id" => $id
-			)
+			), "rank ASC"
 		);
 
 		$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
@@ -250,6 +395,24 @@ class Product extends CI_Controller {
 
 		}
 
+
+	}
+
+	public function refresh_image_list($id){
+		$viewData = new stdClass();
+
+		/* View'e gönderilecek değişkenlerin set edilmesi */
+		$viewData->viewFolder = $this->viewFolder;
+		$viewData->subViewFolder = "image";
+
+		$viewData->item_images = $this->product_image_model->get_all(
+			array(
+				"product_id" => $id
+			)
+		);
+
+		$render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+		echo $render_html;
 
 	}
 
