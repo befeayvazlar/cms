@@ -78,7 +78,188 @@
 					jackColor: jackColor
 				});
 			});
-		});
+
+            $.extend( true, $.fn.dataTable.defaults, {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Turkish.json"
+                }
+            } );
+
+            // $('#dataTable').dataTable({
+            //
+            //
+            //     // "preDrawCallback": function( settings ) {
+            //     //     alert( 'DataTables has redrawn the table' );
+            //     //     $('[data-switchery]').each(function(){
+            //     //         var $this = $(this),
+            //     //             color = $this.attr('data-color') || '#188ae2',
+            //     //             jackColor = $this.attr('data-jackColor') || '#ffffff',
+            //     //             size = $this.attr('data-size') || 'default'
+            //     //
+            //     //         new Switchery(this, {
+            //     //             color: color,
+            //     //             size: size,
+            //     //             jackColor: jackColor
+            //     //         });
+            //     //     });
+            //     // }
+            //
+            // } );
+
+
+            var t = $('#dataTable').DataTable( {
+				/* Kayıt göster yerine Kopyala, Excel, Pdf, Yazdır butonları ekler.
+				 dom: 'Bfrtip',
+				 buttons: [
+				 'copy', 'excel', 'pdf', 'print'
+				 ],*/
+                "pagingType": "full_numbers",
+                responsive: true,
+                language: {
+                    buttons: {
+                        copyTitle: "Panoya kopyalandı.",
+                        copySuccess:"Panoya %d satır kopyalandı",
+                        copy: "Kopyala",
+                        print: "Yazdır"
+                    }
+                },
+                "columnDefs": [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 1
+                } ],
+                "order": [[ 1, 'desc' ]]
+            } );
+
+            t.on( 'order.dt search.dt', function () {
+                t.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
+            lightbox.option({
+                'resizeDuration': 200,
+                'albumLabel': "Resim %1/%2",
+                'positionFromTop': 0
+            });
+
+			$('#def-dataTable').DataTable( {
+				 //Kayıt göster yerine Kopyala, Excel, Pdf, Yazdır butonları ekler.
+				 dom: 'Bfrtip',
+				 buttons: [
+				 'copy', 'excel', 'pdf', 'print'
+				 ],
+				"pagingType": "full_numbers",
+				responsive: true,
+				language: {
+					buttons: {
+						copyTitle: "Panoya kopyalandı.",
+						copySuccess:"Panoya %d satır kopyalandı",
+						copy: "Kopyala",
+						print: "Yazdır"
+					}
+				}
+			} );
+
+			var ajax_url = window.location.href + "/getLists";
+			//alert(ajax_url);
+
+			$('#SS_dataTable').DataTable({
+
+				//Kayıt göster yerine Kopyala, Excel, Pdf, Yazdır butonları ekler.
+				"pagingType": "full_numbers",
+				//responsive: true,
+				// Processing indicator
+				stateSave: true,
+				"processing": true,
+				// DataTables server-side processing mode
+				"serverSide": true,
+				"order": [],
+				"rowId": function(data) {
+					return 'ord-' + data[1];
+				},
+				columnDefs:[
+					{
+						"targets": [0],
+						"orderable": false
+					},
+					{
+						"targets": [-1],
+						"orderable": false,
+						"className":"text-center"
+					},
+					{
+						"targets": [-3],
+						"className":"text-center"
+					}
+					/*{targets:-1, render:function(data){
+						moment.locale("tr");
+						return moment(data).format('lll');;
+					}},
+					{targets:-2, render:function(data){
+						return (data == 1) ? 'Aktif'+data : 'Pasif';
+					}}*/
+				],
+				// Load data from an Ajax source
+				"ajax": {
+					url: ajax_url,
+					type: 'POST'
+				},
+				"drawCallback": function( settings ) {
+					         //alert( 'DataTables has redrawn the table' );
+					         $('[data-switchery]').each(function(){
+					             var $this = $(this),
+					                 color = $this.attr('data-color') || '#188ae2',
+					                 jackColor = $this.attr('data-jackColor') || '#ffffff',
+					                 size = $this.attr('data-size') || 'default'
+
+					             Switchery(this, {
+					                color: color,
+					                 size: size,
+					                 jackColor: jackColor
+					             });
+					         });
+					}
+
+			});
+
+
+
+            // $('#dataTable').dataTable({
+				// /* Kayıt göster yerine Kopyala, Excel, Pdf, Yazdır butonları ekler.
+				//  dom: 'Bfrtip',
+				//  buttons: [
+				//  'copy', 'excel', 'pdf', 'print'
+				//  ],*/
+            //     "pagingType": "full_numbers",
+            //     responsive: true,
+            //     language: {
+            //         buttons: {
+            //             copyTitle: "Panoya kopyalandı.",
+            //             copySuccess:"Panoya %d satır kopyalandı",
+            //             copy: "Kopyala",
+            //             print: "Yazdır"
+            //         }
+            //     },
+            //     "drawCallback": function( settings ) {
+            //         alert( 'DataTables has redrawn the table' );
+            //         $('[data-switchery]').each(function(){
+            //             var $this = $(this),
+            //                 color = $this.attr('data-color') || '#188ae2',
+            //                 jackColor = $this.attr('data-jackColor') || '#ffffff',
+            //                 size = $this.attr('data-size') || 'default'
+            //
+            //             Switchery(this, {
+            //                 color: color,
+            //                 size: size,
+            //                 jackColor: jackColor
+            //             });
+            //         });
+            //     }
+            //
+            // });
+
+        });
 	};
 
 	window.app = app;

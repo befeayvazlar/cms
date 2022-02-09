@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    // Dropzone.autoDiscover = false;
+
     $(".sortable").sortable();
     $(".image_list_container, .content_container").on('click', '.remove-btn', function () {
 
@@ -56,6 +58,47 @@ $(document).ready(function () {
         var $data_url = $(this).data("url");
         $.post($data_url,{data: $data}, function (response) {})
     })
+
+    $(".button_usage_btn").change(function() {
+        $(".button-information-container").slideToggle();
+    })
+
+    var animating = false;
+    var masteranimate = false;
+
+        $('#selectAllPermissions').change(function (e) {
+            masteranimate = true;
+            if (!animating) {
+                var masterStatus = $(this).prop('checked');
+                $('input.isActive').each(function (index) {
+                    var switchStatus = $('input.isActive')[index].checked;
+                    if (switchStatus != masterStatus) {
+                        $(this).trigger('click');
+                    }
+                });
+            }
+            masteranimate = false;
+        });
+
+        $('input.isActive').change(function (e) {
+            animating = true;
+            if (!masteranimate) {
+                if (!$('#selectAllPermissions').prop('checked')) {
+                    $('#selectAllPermissions').trigger('click');
+                }
+                var goinoff = true;
+                $('input.isActive').each(function (index) {
+                    if ($('input.isActive')[index].checked) {
+                        goinoff = false;
+                    }
+                });
+                if (goinoff) {
+                    $('#selectAllPermissions').trigger('click');
+                }
+            }
+            animating = false;
+        });
+
     var uploadSection = Dropzone.forElement("#dropzone");
     uploadSection.on("complete", function(file) {
         var $data_url = $("#dropzone").data("url");
@@ -79,5 +122,4 @@ $(document).ready(function () {
         });
 
     })
-
 })
